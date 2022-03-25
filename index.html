@@ -5,27 +5,38 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fan Food</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
+ <section class="hero is-fullheight is-primary has-background"> 
+   <img alt="sports crowd" class="hero-background is-transparent" src="./assets/sports-crowd.jpg"/>
+    <div class="hero-body">
+     <div class="container">
+      <h1 class="title is-1">Fan Food</h1>
+    </div>  
+     </div>
+ </section>
 
-    <header>
-        <h1>Fan Food</h1>
-    </header>
+ <section class="section">
+   <div class="container">
+    <div class="column">     
+        <div>
+            <form action="">
+                <label class="title is-4" for="event-search">Enter an Event or Venue</label>
+                <br>
+                <input type="textbox" name="event-search" id="event-search" placeholder="Search Event">
+                <br>
+                <button class="button is-primary" id="event-search-submit" type="submit">Search</button>
 
-    <div>
-        <form action="">
-            <label for="event-search">Enter an Even or Venue</label>
-            <input type="textbox" name="event-search" id="event-search" placeholder="Search Event">
-            <button id="event-search-submit" type="submit">Search</button>
+                <div id="event-search-results">
 
-            <div id="event-search-results">
-
-            </div>
-
-        </form>
+                </div>
+            </form>
+        </div>
     </div>
-
+  </div>
+ </section>
     
     <script src="./assets/js/script.js"></script>
 </body>
