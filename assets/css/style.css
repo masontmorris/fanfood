@@ -1,12 +1,33 @@
+/* Global Variables */
+
+:root {
+
+}
+
+/* Global Declarations */
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+
+}
+
+
+/* Text Positioning */
+
 section  {
     margin: center;
     text-align: center;
 }
 
+/* Hero Image */
+
 .hero.has-background {
     position: relative;
     overflow: hidden;
 }
+
 .hero-background {
     position: absolute;
     object-fit: cover;
