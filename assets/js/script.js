@@ -8,7 +8,7 @@ function searchEvents(eventKeywordEl) {
 
     var TMAPIKey = "AlQWhpNMj9NUx0BGdXyvOErADkNSGKNs";
 
-    var TMAPIURL = "http://app.ticketmaster.com/discovery/v2/events.json?keyword=" + eventKeywordEl + "&size=100&sort=date,asc&apikey=" + TMAPIKey;
+    var TMAPIURL = "http://app.ticketmaster.com/discovery/v2/events.json?keyword=" + eventKeywordEl + "&size=100&apikey=" + TMAPIKey;
 
     fetch(TMAPIURL)
         .then(function (response) {
@@ -87,12 +87,13 @@ function displayEvents(data) {
         searchResultsContainer.append(prevPgBtn);
     }
 
-    let nextPgBtn = document.createElement("button");
-    nextPgBtn.setAttribute("type", "button");
-    nextPgBtn.setAttribute("id", "next-pg-btn");
-    nextPgBtn.textContent = "Next Page";
-    searchResultsContainer.append(nextPgBtn);
-
+    if (eventPgNum < 20) {
+        let nextPgBtn = document.createElement("button");
+        nextPgBtn.setAttribute("type", "button");
+        nextPgBtn.setAttribute("id", "next-pg-btn");
+        nextPgBtn.textContent = "Next Page";
+        searchResultsContainer.append(nextPgBtn);
+    }
     $("#next-pg-btn").click(function () {
         eventPgNum++;
         displayEvents(data);
