@@ -46,7 +46,7 @@ function displayEvents(data) {
         console.log(event._embedded);
         let eventName = event.name;
         let eventDate = event.dates.start.localDate;
-        let eventVenue = event._embedded.venues[0].name;
+        let eventVenue = event._embedded.venues[0];
         console.log(eventVenue);
         let eventURL = event.url;
         let eventImage = event.images[0].url;
@@ -61,7 +61,7 @@ function displayEvents(data) {
         eventDateEl.textContent = eventDate;
 
         let eventVenueEl = document.createElement("p");
-        eventVenueEl.textContent = eventVenue;
+        eventVenueEl.textContent = `${eventVenue.city.name}, ${eventVenue.state.stateCode}`;
 
         let eventURLEl = document.createElement("a");
         eventURLEl.textContent = eventURL;
