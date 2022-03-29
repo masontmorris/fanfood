@@ -1,14 +1,14 @@
 var eventKeywordEl = document.querySelector("#event-search");
 var eventFormEl = document.querySelector("#event-form");
 var searchResultsContainer = $("#event-search-results");
-var eventPgNum = "1";
+var eventPgNum = 1;
 
 function searchEvents(eventKeywordEl) {
     console.log(eventKeywordEl);
 
     var TMAPIKey = "AlQWhpNMj9NUx0BGdXyvOErADkNSGKNs";
 
-    var TMAPIURL = "http://app.ticketmaster.com/discovery/v2/events.json?keyword=" + eventKeywordEl + "&apikey=" + TMAPIKey;
+    var TMAPIURL = "http://app.ticketmaster.com/discovery/v2/events.json?keyword=" + eventKeywordEl + "&size=100&sort=date,asc&apikey=" + TMAPIKey;
 
     fetch(TMAPIURL)
         .then(function (response) {
@@ -28,7 +28,7 @@ function searchEvents(eventKeywordEl) {
 
 function formSubmitHandler(event) {
     event.preventDefault();
-
+    eventPgNum = 1;
     let keyword = eventKeywordEl.value.trim();
 
     if (keyword) {
@@ -79,21 +79,19 @@ function displayEvents(data) {
         testFS(venueLat, venueLng);
     }
 
-    let nextPgBtn = document.createElement("button");
-    nextPgBtn.setAttribute("type", "button");
-    nextPgBtn.setAttribute("id", "next-pg-btn");
-    nextPgBtn.textContent = "Next Page";
-
-    searchResultsContainer.append(nextPgBtn);
-
     if (eventPgNum > 1) {
         let prevPgBtn = document.createElement("button");
         prevPgBtn.setAttribute("type", "button");
         prevPgBtn.setAttribute("id", "prev-pg-btn");
         prevPgBtn.textContent = "Previous Page";
-
         searchResultsContainer.append(prevPgBtn);
     }
+
+    let nextPgBtn = document.createElement("button");
+    nextPgBtn.setAttribute("type", "button");
+    nextPgBtn.setAttribute("id", "next-pg-btn");
+    nextPgBtn.textContent = "Next Page";
+    searchResultsContainer.append(nextPgBtn);
 
     $("#next-pg-btn").click(function () {
         eventPgNum++;
