@@ -43,6 +43,7 @@ function formSubmitHandler(event) {
 function displayEvents(data) {
     searchResultsContainer.html("");
 
+
     for (let i = 0; i < 5; i++) {
         let eventIndex = i + (eventPgNum - 1) * 5;
         console.log(eventIndex);
