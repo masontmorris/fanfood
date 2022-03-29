@@ -1,5 +1,6 @@
 var eventKeywordEl = document.querySelector("#event-search");
 var eventFormEl = document.querySelector("#event-form");
+var eventObj = {};
 
 function searchEvents(eventKeywordEl) {
     console.log(eventKeywordEl);
@@ -42,13 +43,13 @@ function displayEvents(data) {
     console.log(data);
 
     for (let i = 0; i < data._embedded.events.length; i++) {
-        let event = data._embedded.events[i];
-        console.log(event._embedded);
-        let eventName = event.name;
-        let eventDate = event.dates.start.localDate;
-        let eventVenue = event._embedded.venues[0];
-        let eventURL = event.url;
-        let eventImage = event.images[0].url;
+        eventObj = data._embedded.events[i];
+        console.log(eventObj._embedded);
+        let eventName = eventObj.name;
+        let eventDate = eventObj.dates.start.localDate;
+        let eventVenue = eventObj._embedded.venues[0];
+        let eventURL = eventObj.url;
+        let eventImage = eventObj.images[0].url;
         let venueLat = eventVenue.location.latitude;
         let venueLng = eventVenue.location.longitude;
         console.log(venueLat, venueLng);
@@ -57,6 +58,8 @@ function displayEvents(data) {
 
         let eventNameEl = document.createElement("h2");
         eventNameEl.textContent = eventName;
+        eventNameEl.classList.add("event-name");
+        eventNameEl.setAttribute("id", i);
 
         let eventDateEl = document.createElement("p");
         eventDateEl.textContent = eventDate;
@@ -81,6 +84,11 @@ function displayEvents(data) {
         eventContainer.append(eventCard);
         testFS(venueLat, venueLng);
     }
+
+    $(".event-name").click(function () {
+        sessionStorage.setItem("eventObj", JSON.stringify(eventObj));
+        window.location.href = "single-event.html";
+    });
 }
 
 async function testFS(lat, lng) {
