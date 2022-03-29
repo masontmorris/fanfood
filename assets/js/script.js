@@ -50,6 +50,7 @@ function displayEvents(data) {
         let eventName = event.name;
         let eventDate = event.dates.start.localDate;
         let eventVenue = event._embedded.venues[0];
+        let venueName = event._embedded.venues[0].name;
         let eventURL = event.url;
         let eventImage = event.images[0].url;
         let venueLat = eventVenue.location.latitude;
@@ -60,6 +61,10 @@ function displayEvents(data) {
 
         let eventNameEl = document.createElement("h2");
         eventNameEl.textContent = eventName;
+
+        let venueNameEl = document.createElement("h4");
+        venueNameEl.textContent = venueName;
+
 
         let eventDateEl = document.createElement("p");
         eventDateEl.textContent = eventDate;
@@ -75,10 +80,12 @@ function displayEvents(data) {
         eventImageEl.src = eventImage;
 
         eventCard.appendChild(eventNameEl);
+        eventCard.appendChild(eventImageEl);
+        eventCard.appendChild(venueNameEl);
         eventCard.appendChild(eventDateEl);
         eventCard.appendChild(eventVenueEl);
         eventCard.appendChild(eventURLEl);
-        eventCard.appendChild(eventImageEl);
+
 
     
         eventContainerEl.append(eventCard);
