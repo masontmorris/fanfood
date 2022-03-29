@@ -1,6 +1,7 @@
 var eventKeywordEl = document.querySelector("#event-search");
 var eventFormEl = document.querySelector("#event-form");
 var eventObj = {};
+var eventContainer = $("#event-search-results");
 
 function searchEvents(eventKeywordEl) {
     console.log(eventKeywordEl);
@@ -41,7 +42,7 @@ function formSubmitHandler(event) {
 
 function displayEvents(data) {
     console.log(data);
-
+    eventContainer.html("");
     for (let i = 0; i < data._embedded.events.length; i++) {
         eventObj = data._embedded.events[i];
         console.log(eventObj._embedded);
@@ -80,7 +81,6 @@ function displayEvents(data) {
         eventCard.appendChild(eventURLEl);
         eventCard.appendChild(eventImageEl);
 
-        let eventContainer = $("#event-search-results");
         eventContainer.append(eventCard);
         testFS(venueLat, venueLng);
     }
@@ -89,25 +89,6 @@ function displayEvents(data) {
         sessionStorage.setItem("eventObj", JSON.stringify(eventObj));
         window.location.href = "single-event.html";
     });
-}
-
-async function testFS(lat, lng) {
-    let fsBaseURL = "https://api.foursquare.com/v3/places/search";
-    let fsAPIKey = "fsq33tA/HPjKRDhV2MuuWp+nKpzNssXSc9zq7A7NH+Qrx30=";
-    let fsQuery = `?ll=${lat},${lng}&radius=500&limit=10`;
-    try {
-        let response = await fetch(fsBaseURL + fsQuery, {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-                Authorization: fsAPIKey,
-            },
-        });
-        let data = await response.json();
-        console.log(data);
-    } catch (err) {
-        console.log(err);
-    }
 }
 
 eventFormEl.addEventListener("submit", formSubmitHandler);
