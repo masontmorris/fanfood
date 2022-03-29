@@ -40,6 +40,9 @@ function formSubmitHandler(event) {
 
 function displayEvents(data) {
     console.log(data);
+    let eventContainerEl = $("#event-search-results");
+
+    eventContainerEl.empty();
 
     for (let i = 0; i < data._embedded.events.length; i++) {
         let event = data._embedded.events[i];
@@ -77,8 +80,9 @@ function displayEvents(data) {
         eventCard.appendChild(eventURLEl);
         eventCard.appendChild(eventImageEl);
 
-        let eventContainer = $("#event-search-results");
-        eventContainer.append(eventCard);
+    
+        eventContainerEl.append(eventCard);
+
         testFS(venueLat, venueLng);
     }
 }
