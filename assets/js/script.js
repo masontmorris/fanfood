@@ -47,10 +47,11 @@ function displayEvents(data) {
         let eventName = event.name;
         let eventDate = event.dates.start.localDate;
         let eventVenue = event._embedded.venues[0];
-        console.log(eventVenue);
         let eventURL = event.url;
         let eventImage = event.images[0].url;
-
+        let venueLat = eventVenue.location.latitude;
+        let venueLng = eventVenue.location.longitude;
+        console.log(venueLat, venueLng);
         let eventCard = document.createElement("div");
         eventCard.classList.add("event-card");
 
