@@ -1,37 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fan Food</title>
-    <link rel="stylesheet" href="./assets/css/style.css">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Fan Food</title>
+        <link rel="stylesheet" href="./assets/css/style.css" />
+    </head>
+    <body>
+        <header>
+            <h1>Fan Food</h1>
+            <p>Search for an event. Find nearby places to eat.</p>
+        </header>
 
-    <header>
-        <h1>Fan Food</h1>
-        <p>Search for an event. Find nearby places to eat.</p>
-    </header>
+        <main>
+            <div>
+                <form id="event-form" action="">
+                    <label for="event-search">Enter a search keyword</label>
+                    <input type="text" name="event-search" id="event-search" for="event-search" placeholder="Search Event" />
+                    <button id="event-search-submit" class="btn" type="submit">Search</button>
 
-    <main>
-        <div>
-            <form id="event-form" action="">
-                <label for="event-search">Enter a search keyword</label>
-                <input type="text" name="event-search" id="event-search" for="event-search" placeholder="Search Event">
-                <button id="event-search-submit" class="btn" type="submit">Search</button>
-    
-                <div id="event-search-results">
-    
-                </div>
-    
-            </form>
-        </div>
+                    <div id="event-search-results"></div>
+                </form>
+            </div>
+        </main>
 
-
-    </main>
-
-    
-    <script src="./assets/js/script.js"></script>
-</body>
+        <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+        <script src="./assets/js/script.js"></script>
+    </body>
 </html>
