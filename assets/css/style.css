@@ -22,6 +22,9 @@ section  {
     text-align: center;
 }
 
+h3 {
+    padding: 15px;
+}
 /* Hero Image */
 
  .hero.has-background {
