@@ -1,12 +1,14 @@
 var eventKeywordEl = document.querySelector("#event-search");
 var eventFormEl = document.querySelector("#event-form");
+var searchResultsContainer = $("#event-search-results");
+var eventPgNum = "1";
 
 function searchEvents(eventKeywordEl) {
     console.log(eventKeywordEl);
 
     var TMAPIKey = "AlQWhpNMj9NUx0BGdXyvOErADkNSGKNs";
 
-    var TMAPIURL = "http://app.ticketmaster.com/discovery/v2/events.json?keyword=" + eventKeywordEl + "&size=5&apikey=" + TMAPIKey;
+    var TMAPIURL = "http://app.ticketmaster.com/discovery/v2/events.json?keyword=" + eventKeywordEl + "&apikey=" + TMAPIKey;
 
     fetch(TMAPIURL)
         .then(function (response) {
@@ -39,16 +41,16 @@ function formSubmitHandler(event) {
 }
 
 function displayEvents(data) {
-    console.log(data);
+    searchResultsContainer.html("");
 
-    for (let i = 0; i < data._embedded.events.length; i++) {
-        let event = data._embedded.events[i];
-        console.log(event._embedded);
+    for (let i = 0; i < 5; i++) {
+        let eventIndex = i + (eventPgNum - 1) * 5;
+        console.log(eventIndex);
+        let event = data._embedded.events[eventIndex];
         let eventName = event.name;
         let eventDate = event.dates.start.localDate;
         let eventVenue = event._embedded.venues[0];
         let eventURL = event.url;
-        let eventImage = event.images[0].url;
         let venueLat = eventVenue.location.latitude;
         let venueLng = eventVenue.location.longitude;
         console.log(venueLat, venueLng);
@@ -65,22 +67,43 @@ function displayEvents(data) {
         eventVenueEl.textContent = `${eventVenue.city.name}, ${eventVenue.state.stateCode}`;
 
         let eventURLEl = document.createElement("a");
-        eventURLEl.textContent = eventURL;
+        eventURLEl.textContent = "Buy Tickets";
         eventURLEl.href = eventURL;
-
-        let eventImageEl = document.createElement("img");
-        eventImageEl.src = eventImage;
 
         eventCard.appendChild(eventNameEl);
         eventCard.appendChild(eventDateEl);
         eventCard.appendChild(eventVenueEl);
         eventCard.appendChild(eventURLEl);
-        eventCard.appendChild(eventImageEl);
 
-        let eventContainer = $("#event-search-results");
-        eventContainer.append(eventCard);
+        searchResultsContainer.append(eventCard);
         testFS(venueLat, venueLng);
     }
+
+    let nextPgBtn = document.createElement("button");
+    nextPgBtn.setAttribute("type", "button");
+    nextPgBtn.setAttribute("id", "next-pg-btn");
+    nextPgBtn.textContent = "Next Page";
+
+    searchResultsContainer.append(nextPgBtn);
+
+    if (eventPgNum > 1) {
+        let prevPgBtn = document.createElement("button");
+        prevPgBtn.setAttribute("type", "button");
+        prevPgBtn.setAttribute("id", "prev-pg-btn");
+        prevPgBtn.textContent = "Previous Page";
+
+        searchResultsContainer.append(prevPgBtn);
+    }
+
+    $("#next-pg-btn").click(function () {
+        eventPgNum++;
+        displayEvents(data);
+    });
+
+    $("#prev-pg-btn").click(function () {
+        eventPgNum--;
+        displayEvents(data);
+    });
 }
 
 async function testFS(lat, lng) {
