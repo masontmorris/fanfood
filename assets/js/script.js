@@ -4,6 +4,7 @@ var eventObj = {};
 var searchResultsContainer = $("#event-search-results");
 var eventPgNum = 1;
 var querySize = 30;
+var jsonObj = {};
 
 function searchEvents(eventKeywordEl) {
     console.log(eventKeywordEl);
@@ -48,7 +49,8 @@ function displayEvents(data) {
     for (let i = 0; i < 5; i++) {
         let eventIndex = i + (eventPgNum - 1) * 5;
         if (eventIndex == data._embedded.events.length) return generatePgBtns();
-        eventObj = data._embedded.events[eventIndex];
+        jsonObj = data._embedded.events;
+        eventObj = jsonObj[eventIndex];
         let eventName = eventObj.name;
         let eventDate = eventObj.dates.start.localDate;
         let eventVenue = eventObj._embedded.venues[0];
@@ -62,7 +64,7 @@ function displayEvents(data) {
         let eventNameEl = document.createElement("h2");
         eventNameEl.textContent = eventName;
         eventNameEl.classList.add("event-name");
-        eventNameEl.setAttribute("id", i);
+        eventNameEl.setAttribute("id", eventIndex);
 
         let eventDateEl = document.createElement("p");
         eventDateEl.textContent = eventDate;
@@ -111,7 +113,9 @@ function generatePgBtns() {
         searchResultsContainer.append(nextPgBtn);
     }
     $(".event-name").click(function () {
-        sessionStorage.setItem("eventObj", JSON.stringify(eventObj));
+        let sessionObj = jsonObj[this.id];
+        console.log(this.id);
+        sessionStorage.setItem("sessionObj", JSON.stringify(sessionObj));
         window.location.href = "single-event.html";
     });
 }

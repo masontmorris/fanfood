@@ -1,4 +1,4 @@
-var eventObj = JSON.parse(sessionStorage.getItem("eventObj"));
+var eventObj = JSON.parse(sessionStorage.getItem("sessionObj"));
 console.log(eventObj);
 var lat = eventObj._embedded.venues[0].location.latitude;
 var lng = eventObj._embedded.venues[0].location.longitude;
