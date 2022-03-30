@@ -11,10 +11,9 @@ var queryObj = {
 };
 var fsAPIKey = "fsq33tA/HPjKRDhV2MuuWp+nKpzNssXSc9zq7A7NH+Qrx30=";
 
-console.log(queryObj);
 callFS("search");
 
-// function fetches data from foursquare API using lat and lng of event venue.
+// function fetches data from foursquare search api in search mode, and returns restaurants' websites in url mode
 async function callFS(mode) {
     let query = queryObj[mode];
     let fetchURL = fsBaseURL + query;
@@ -43,8 +42,6 @@ async function displayResults(data) {
     let restaurantList = document.createElement("div");
     restaurantList.classList.add("restaurant-list");
     restaurantList.setAttribute("id", `restaurant-list-${eventPgNum}`);
-    console.log(restaurantList.id);
-    console.log(data);
     for (let i = 0; i < 5; i++) {
         let eventIndex = i + (eventPgNum - 1) * 5;
         if (eventIndex == data.length) return generatePgBtns(data);
@@ -52,10 +49,9 @@ async function displayResults(data) {
         let venueName = venue.name;
         let venueAddress = venue.location.formatted_address;
         let venueCategories = venue.categories;
+
         queryObj.url = `${venue.fsq_id}?fields=website`;
-        console.log(queryObj.url);
         let venueURL = await callFS("url");
-        console.log(venueURL);
         let venueCategoriesNames = [];
         for (let j = 0; j < venueCategories.length; j++) {
             venueCategoriesNames.push(venueCategories[j].name);
