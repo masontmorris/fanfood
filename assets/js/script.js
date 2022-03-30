@@ -1,8 +1,10 @@
 var eventKeywordEl = document.querySelector("#event-search");
 var eventFormEl = document.querySelector("#event-form");
+var eventObj = {};
 var searchResultsContainer = $("#event-search-results");
 var eventPgNum = 1;
 var querySize = 30;
+var jsonObj = {};
 
 function searchEvents(eventKeywordEl) {
     console.log(eventKeywordEl);
@@ -42,18 +44,18 @@ function formSubmitHandler(event) {
 }
 
 function displayEvents(data) {
+    console.log(data);
     searchResultsContainer.html("");
-
-
     for (let i = 0; i < 5; i++) {
         let eventIndex = i + (eventPgNum - 1) * 5;
-        if (eventIndex > querySize) return generatePgBtns();
-        console.log(eventIndex);
-        let event = data._embedded.events[eventIndex];
-        let eventName = event.name;
-        let eventDate = event.dates.start.localDate;
-        let eventVenue = event._embedded.venues[0];
-        let eventURL = event.url;
+        if (eventIndex == data._embedded.events.length) return generatePgBtns();
+        jsonObj = data._embedded.events;
+        eventObj = jsonObj[eventIndex];
+        let eventName = eventObj.name;
+        let eventDate = eventObj.dates.start.localDate;
+        let eventVenue = eventObj._embedded.venues[0];
+        let eventURL = eventObj.url;
+
         let venueLat = eventVenue.location.latitude;
         let venueLng = eventVenue.location.longitude;
         console.log(venueLat, venueLng);
@@ -62,6 +64,8 @@ function displayEvents(data) {
 
         let eventNameEl = document.createElement("h2");
         eventNameEl.textContent = eventName;
+        eventNameEl.classList.add("event-name");
+        eventNameEl.setAttribute("id", eventIndex);
 
         let eventDateEl = document.createElement("p");
         eventDateEl.textContent = eventDate;
@@ -80,6 +84,7 @@ function displayEvents(data) {
 
         searchResultsContainer.append(eventCard);
     }
+
     generatePgBtns();
     $("#next-pg-btn").click(function () {
         eventPgNum++;
@@ -90,25 +95,6 @@ function displayEvents(data) {
         eventPgNum--;
         displayEvents(data);
     });
-}
-
-async function testFS(lat, lng) {
-    let fsBaseURL = "https://api.foursquare.com/v3/places/search";
-    let fsAPIKey = "fsq33tA/HPjKRDhV2MuuWp+nKpzNssXSc9zq7A7NH+Qrx30=";
-    let fsQuery = `?ll=${lat},${lng}&radius=500&limit=10`;
-    try {
-        let response = await fetch(fsBaseURL + fsQuery, {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-                Authorization: fsAPIKey,
-            },
-        });
-        let data = await response.json();
-        console.log(data);
-    } catch (err) {
-        console.log(err);
-    }
 }
 
 function generatePgBtns() {
@@ -127,6 +113,12 @@ function generatePgBtns() {
         nextPgBtn.textContent = "Next Page";
         searchResultsContainer.append(nextPgBtn);
     }
+    $(".event-name").click(function () {
+        let sessionObj = jsonObj[this.id];
+        console.log(this.id);
+        sessionStorage.setItem("sessionObj", JSON.stringify(sessionObj));
+        window.location.href = "single-event.html";
+    });
 }
 
 eventFormEl.addEventListener("submit", formSubmitHandler);
