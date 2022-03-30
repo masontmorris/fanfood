@@ -105,6 +105,9 @@ function generatePgBtns() {
         let prevPgBtn = document.createElement("button");
         prevPgBtn.setAttribute("type", "button");
         prevPgBtn.setAttribute("id", "prev-pg-btn");
+        prevPgBtn.classList.add("pg-btn");
+        prevPgBtn.classList.add("button");
+        prevPgBtn.classList.add("is-primary");
         prevPgBtn.textContent = "Previous Page";
         searchResultsContainer.append(prevPgBtn);
     }
@@ -113,6 +116,10 @@ function generatePgBtns() {
         let nextPgBtn = document.createElement("button");
         nextPgBtn.setAttribute("type", "button");
         nextPgBtn.setAttribute("id", "next-pg-btn");
+        nextPgBtn.classList.add("pg-btn");
+        nextPgBtn.classList.add("button");
+        nextPgBtn.classList.add("is-primary");
+        nextPgBtn.textContent = "Previous Page";
         nextPgBtn.textContent = "Next Page";
         searchResultsContainer.append(nextPgBtn);
     }
