@@ -49,3 +49,7 @@ event-search-submit,
 event-search {
     margin: auto;
 }
+
+.pg-btn {
+    margin: 0.25em;
+}

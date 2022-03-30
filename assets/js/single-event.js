@@ -4,14 +4,22 @@ var lng = eventObj._embedded.venues[0].location.longitude;
 var container = $("#container");
 let goBackContainer = $("#back-container");
 var eventPgNum = 1;
-callFS(lat, lng);
-// function fetches data from foursquare API using lat and lng of event venue.
-async function callFS(lat, lng) {
-    let fsBaseURL = "https://api.foursquare.com/v3/places/search";
-    let fsAPIKey = "fsq33tA/HPjKRDhV2MuuWp+nKpzNssXSc9zq7A7NH+Qrx30=";
-    let fsQuery = `?ll=${lat},${lng}&radius=500&categories=13000&limit=50`;
+var fsq = "";
+var fsBaseURL = "https://api.foursquare.com/v3/places/";
+var queryObj = {
+    search: `search?ll=${lat},${lng}&radius=500&categories=13000&limit=50`,
+    url: "",
+};
+var fsAPIKey = "fsq33tA/HPjKRDhV2MuuWp+nKpzNssXSc9zq7A7NH+Qrx30=";
+
+callFS("search");
+
+// function fetches data from foursquare search api in search mode, and returns restaurants' websites in url mode
+async function callFS(mode) {
+    let query = queryObj[mode];
+    let fetchURL = fsBaseURL + query;
     try {
-        let response = await fetch(fsBaseURL + fsQuery, {
+        let response = await fetch(fetchURL, {
             method: "GET",
             headers: {
                 Accept: "application/json",
@@ -19,16 +27,22 @@ async function callFS(lat, lng) {
             },
         });
         let data = await response.json();
-        data = data.results;
-        displayResults(data);
+        if (mode == "search") {
+            data = data.results;
+            displayResults(data);
+        } else if (mode == "url") {
+            return data.website;
+        }
     } catch (err) {
         console.log(err);
     }
 }
 // function called after successful API call, takes in data and displays events.
-function displayResults(data) {
+async function displayResults(data) {
     $("#event-name").text(`${eventObj.name} in ${eventObj._embedded.venues[0].city.name}`);
-    container.html("");
+    let restaurantList = document.createElement("div");
+    restaurantList.classList.add("restaurant-list");
+    restaurantList.setAttribute("id", `restaurant-list-${eventPgNum}`);
     for (let i = 0; i < 5; i++) {
         let eventIndex = i + (eventPgNum - 1) * 5;
         if (eventIndex == data.length) return generatePgBtns(data);
@@ -37,6 +51,8 @@ function displayResults(data) {
         let venueAddress = venue.location.formatted_address;
         let venueCategories = venue.categories;
 
+        queryObj.url = `${venue.fsq_id}?fields=website`;
+        let venueURL = await callFS("url");
         let venueCategoriesNames = [];
         for (let j = 0; j < venueCategories.length; j++) {
             venueCategoriesNames.push(venueCategories[j].name);
@@ -47,7 +63,7 @@ function displayResults(data) {
             venueCategoriesIcon.push(venueCategories[j].icon.prefix + "bg_32" + venueCategories[j].icon.suffix);
         }
 
-        let restaurantCard = document.createElement("div");
+        restaurantCard = document.createElement("div");
         restaurantCard.classList.add("restaurant-card");
 
         let nameEl = document.createElement("h3");
@@ -58,19 +74,31 @@ function displayResults(data) {
         addressEl.textContent = venueAddress;
         addressEl.classList.add("venue-address");
 
-        restaurantCard.append(nameEl, addressEl);
-        container.append(restaurantCard);
+        let urlEl = document.createElement("a");
+        urlEl.setAttribute("href", venueURL);
+        urlEl.setAttribute("target", "_blank");
+        urlEl.textContent = "Visit Website";
+        urlEl.classList.add("venue-url");
+
+        restaurantCard.append(nameEl, addressEl, urlEl);
+        restaurantList.append(restaurantCard);
     }
+    $(`#restaurant-list-${eventPgNum - 1}`).remove();
+    $(`#restaurant-list-${eventPgNum + 1}`).remove();
+    container.append(restaurantList);
     generatePgBtns(data);
 }
 // function called after displaying events, generates page buttons.
 function generatePgBtns(data) {
+    $(".pg-btn").remove();
     if (eventPgNum > 1) {
         let prevPgBtn = document.createElement("button");
         prevPgBtn.setAttribute("type", "button");
         prevPgBtn.setAttribute("id", "prev-pg-btn");
         prevPgBtn.textContent = "Previous Page";
-        prevPgBtn.setAttribute("class", "button is-primary");
+        prevPgBtn.classList.add("pg-btn");
+        prevPgBtn.classList.add("button");
+        prevPgBtn.classList.add("is-primary");
         container.append(prevPgBtn);
     }
     if (eventPgNum < data.length / 5) {
@@ -78,7 +106,9 @@ function generatePgBtns(data) {
         nextPgBtn.setAttribute("type", "button");
         nextPgBtn.setAttribute("id", "next-pg-btn");
         nextPgBtn.textContent = "Next Page";
-        nextPgBtn.setAttribute("class", "button is-primary");
+        nextPgBtn.classList.add("pg-btn");
+        nextPgBtn.classList.add("button");
+        nextPgBtn.classList.add("is-primary");
         container.append(nextPgBtn);
     }
     goBackContainer.html("");
@@ -86,7 +116,8 @@ function generatePgBtns(data) {
     backBtn.setAttribute("type", "button");
     backBtn.setAttribute("id", "back-button");
     backBtn.textContent = "Back to Event Search Page";
-    backBtn.setAttribute("class", "button is-primary");
+    backBtn.classList.add("button");
+    backBtn.classList.add("is-primary");
     goBackContainer.append(backBtn);
 
     // page button functionality
@@ -101,7 +132,6 @@ function generatePgBtns(data) {
     // click listener for going back to main page
     $("#back-button").click(function () {
         console.log("Going Back");
-        window.location.href = "index.html";    
+        window.location.href = "index.html";
     });
 }
-
