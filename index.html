@@ -1,29 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Fan Food</title>
-        <link rel="stylesheet" href="./assets/css/style.css" />
-    </head>
-    <body>
-        <header>
-            <h1>Fan Food</h1>
-            <p>Search for an event. Find nearby places to eat.</p>
-        </header>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fan Food</title>
 
-        <main>
-            <div>
-                <form id="event-form" action="">
-                    <label for="event-search">Enter a search keyword</label>
-                    <input type="text" name="event-search" id="event-search" for="event-search" placeholder="Search Event" />
-                    <button id="event-search-submit" class="btn" type="submit">Search</button>
+    <!-- Bulma CSS Framework -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <!-- Main Local CSS Styling-->
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
 
-                    <div id="event-search-results"></div>
-                </form>
-            </div>
-        </main>
+<body>
+ <section class="hero is-primary hero-images-style"> 
+   <img  class="hero-background is-transparent hero is-primary" src="./assets/sports-crowd.jpg" alt="sports crowd "/>
+    <div class="hero-body">
+
+     <div class="container">
+      <h1 class="title is-1">Fan Food</h1>
+    </div>  
+     </div>
+ </section>
+
+ <section class="section is-primary">
+   <div class="container">
+    <div class="column">     
+        <div>
+            <form action="">
+                <label class="title is-4" for="event-search">Enter an Event.</label>
+                <p class="title is-4" for="Find-nearby-places">Find nearby places</p>
+                
+                <input type="textbox" name="event-search" id="event-search" placeholder="Search Event">
+                <br>
+                <button class="button is-primary" id="event-search-submit" type="submit">Search</button>
+
+                <div id="event-search-results">
+
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+ </section>
 
         <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
         <script src="./assets/js/script.js"></script>
