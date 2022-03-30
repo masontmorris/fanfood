@@ -2,13 +2,14 @@ var eventKeywordEl = document.querySelector("#event-search");
 var eventFormEl = document.querySelector("#event-form");
 var searchResultsContainer = $("#event-search-results");
 var eventPgNum = 1;
+var querySize = 30;
 
 function searchEvents(eventKeywordEl) {
     console.log(eventKeywordEl);
 
     var TMAPIKey = "AlQWhpNMj9NUx0BGdXyvOErADkNSGKNs";
 
-    var TMAPIURL = "http://app.ticketmaster.com/discovery/v2/events.json?keyword=" + eventKeywordEl + "&size=100&apikey=" + TMAPIKey;
+    var TMAPIURL = "http://app.ticketmaster.com/discovery/v2/events.json?keyword=" + eventKeywordEl + `&size=${querySize}&apikey=` + TMAPIKey;
 
     fetch(TMAPIURL)
         .then(function (response) {
@@ -45,6 +46,7 @@ function displayEvents(data) {
 
     for (let i = 0; i < 5; i++) {
         let eventIndex = i + (eventPgNum - 1) * 5;
+        if (eventIndex > querySize) return generatePgBtns();
         console.log(eventIndex);
         let event = data._embedded.events[eventIndex];
         let eventName = event.name;
@@ -76,24 +78,8 @@ function displayEvents(data) {
         eventCard.appendChild(eventURLEl);
 
         searchResultsContainer.append(eventCard);
-        testFS(venueLat, venueLng);
     }
-
-    if (eventPgNum > 1) {
-        let prevPgBtn = document.createElement("button");
-        prevPgBtn.setAttribute("type", "button");
-        prevPgBtn.setAttribute("id", "prev-pg-btn");
-        prevPgBtn.textContent = "Previous Page";
-        searchResultsContainer.append(prevPgBtn);
-    }
-
-    if (eventPgNum < 20) {
-        let nextPgBtn = document.createElement("button");
-        nextPgBtn.setAttribute("type", "button");
-        nextPgBtn.setAttribute("id", "next-pg-btn");
-        nextPgBtn.textContent = "Next Page";
-        searchResultsContainer.append(nextPgBtn);
-    }
+    generatePgBtns();
     $("#next-pg-btn").click(function () {
         eventPgNum++;
         displayEvents(data);
@@ -121,6 +107,24 @@ async function testFS(lat, lng) {
         console.log(data);
     } catch (err) {
         console.log(err);
+    }
+}
+
+function generatePgBtns() {
+    if (eventPgNum > 1) {
+        let prevPgBtn = document.createElement("button");
+        prevPgBtn.setAttribute("type", "button");
+        prevPgBtn.setAttribute("id", "prev-pg-btn");
+        prevPgBtn.textContent = "Previous Page";
+        searchResultsContainer.append(prevPgBtn);
+    }
+
+    if (eventPgNum < querySize / 5) {
+        let nextPgBtn = document.createElement("button");
+        nextPgBtn.setAttribute("type", "button");
+        nextPgBtn.setAttribute("id", "next-pg-btn");
+        nextPgBtn.textContent = "Next Page";
+        searchResultsContainer.append(nextPgBtn);
     }
 }
 
