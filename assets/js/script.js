@@ -121,22 +121,4 @@ function generatePgBtns() {
     });
 }
 
-function generatePgBtns() {
-    if (eventPgNum > 1) {
-        let prevPgBtn = document.createElement("button");
-        prevPgBtn.setAttribute("type", "button");
-        prevPgBtn.setAttribute("id", "prev-pg-btn");
-        prevPgBtn.textContent = "Previous Page";
-        searchResultsContainer.append(prevPgBtn);
-    }
-
-    if (eventPgNum < querySize / 5) {
-        let nextPgBtn = document.createElement("button");
-        nextPgBtn.setAttribute("type", "button");
-        nextPgBtn.setAttribute("id", "next-pg-btn");
-        nextPgBtn.textContent = "Next Page";
-        searchResultsContainer.append(nextPgBtn);
-    }
-}
-
 eventFormEl.addEventListener("submit", formSubmitHandler);
