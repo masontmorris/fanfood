@@ -50,15 +50,20 @@ function displayResults(data) {
             venueCategoriesIcon.push(venueCategories[j].icon.prefix + "bg_32" + venueCategories[j].icon.suffix);
         }
 
+        let restaurantCard = document.createElement("div");
+        restaurantCard.classList.add("restaurant-card");
+
         let nameEl = document.createElement("h3");
         nameEl.textContent = venueName;
         nameEl.classList.add("venue-name");
+
         let addressEl = document.createElement("p");
         addressEl.textContent = venueAddress;
         addressEl.classList.add("venue-address");
 
         console.log(venueCategoriesNames);
-        container.append(nameEl, addressEl);
+        restaurantCard.append(nameEl, addressEl);
+        container.append(restaurantCard);
     }
     generatePgBtns(data);
 }
