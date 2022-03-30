@@ -61,11 +61,14 @@ function displayEvents(data) {
         console.log(venueLat, venueLng);
         let eventCard = document.createElement("div");
         eventCard.classList.add("event-card");
+        eventCard.setAttribute("id", eventIndex);
 
         let eventNameEl = document.createElement("h2");
         eventNameEl.textContent = eventName;
         eventNameEl.classList.add("event-name");
-        eventNameEl.setAttribute("id", eventIndex);
+
+        let eventVenueName = document.createElement("p");
+        eventVenueName.textContent = eventVenue.name;
 
         let eventDateEl = document.createElement("p");
         eventDateEl.textContent = eventDate;
@@ -80,6 +83,7 @@ function displayEvents(data) {
         eventCard.appendChild(eventNameEl);
         eventCard.appendChild(eventDateEl);
         eventCard.appendChild(eventVenueEl);
+        eventCard.appendChild(eventVenueName);
         eventCard.appendChild(eventURLEl);
 
         searchResultsContainer.append(eventCard);
@@ -113,7 +117,7 @@ function generatePgBtns() {
         nextPgBtn.textContent = "Next Page";
         searchResultsContainer.append(nextPgBtn);
     }
-    $(".event-name").click(function () {
+    $(".event-card").click(function () {
         let sessionObj = jsonObj[this.id];
         console.log(this.id);
         sessionStorage.setItem("sessionObj", JSON.stringify(sessionObj));
