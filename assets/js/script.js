@@ -34,7 +34,9 @@ function formSubmitHandler(event) {
 
     if (keyword) {
         searchEvents(keyword);
+        let storedKeyword = keyword;
         eventKeywordEl.value = "";
+        return storedKeyword;
     } else {
         alert("Please enter a search keyword");
     }

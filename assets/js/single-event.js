@@ -2,6 +2,7 @@ var eventObj = JSON.parse(sessionStorage.getItem("sessionObj"));
 var lat = eventObj._embedded.venues[0].location.latitude;
 var lng = eventObj._embedded.venues[0].location.longitude;
 var container = $("#container");
+let goBackContainer = $("#back-container");
 var eventPgNum = 1;
 callFS(lat, lng);
 // function fetches data from foursquare API using lat and lng of event venue.
@@ -69,6 +70,7 @@ function generatePgBtns(data) {
         prevPgBtn.setAttribute("type", "button");
         prevPgBtn.setAttribute("id", "prev-pg-btn");
         prevPgBtn.textContent = "Previous Page";
+        prevPgBtn.setAttribute("class", "button is-primary");
         container.append(prevPgBtn);
     }
     if (eventPgNum < data.length / 5) {
@@ -76,8 +78,17 @@ function generatePgBtns(data) {
         nextPgBtn.setAttribute("type", "button");
         nextPgBtn.setAttribute("id", "next-pg-btn");
         nextPgBtn.textContent = "Next Page";
+        nextPgBtn.setAttribute("class", "button is-primary");
         container.append(nextPgBtn);
     }
+    goBackContainer.html("");
+    let backBtn = document.createElement("button");
+    backBtn.setAttribute("type", "button");
+    backBtn.setAttribute("id", "back-button");
+    backBtn.textContent = "Back to Event Search Page";
+    backBtn.setAttribute("class", "button is-primary");
+    goBackContainer.append(backBtn);
+
     // page button functionality
     $("#next-pg-btn").click(function () {
         eventPgNum++;
@@ -87,4 +98,10 @@ function generatePgBtns(data) {
         eventPgNum--;
         displayResults(data);
     });
+    // click listener for going back to main page
+    $("#back-button").click(function () {
+        console.log("Going Back");
+        window.location.href = "index.html";    
+    });
 }
+
