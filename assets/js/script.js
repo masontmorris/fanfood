@@ -53,15 +53,20 @@ function displayEvents(data) {
         let eventName = event.name;
         let eventDate = event.dates.start.localDate;
         let eventVenue = event._embedded.venues[0];
+        let venueName = event._embedded.venues[0].name;
         let eventURL = event.url;
         let venueLat = eventVenue.location.latitude;
         let venueLng = eventVenue.location.longitude;
         console.log(venueLat, venueLng);
-        let eventCard = document.createElement("div");
+        let eventCard = document.createElement("a");
         eventCard.classList.add("event-card");
+        eventCard.setAttribute("href", "./single-event.html?event=" + eventName);
 
         let eventNameEl = document.createElement("h2");
         eventNameEl.textContent = eventName;
+
+        let venueNameEl = document.createElement("h4");
+        venueNameEl.textContent = venueName;
 
         let eventDateEl = document.createElement("p");
         eventDateEl.textContent = eventDate;
@@ -74,6 +79,7 @@ function displayEvents(data) {
         eventURLEl.href = eventURL;
 
         eventCard.appendChild(eventNameEl);
+        eventCard.appendChild(venueNameEl);
         eventCard.appendChild(eventDateEl);
         eventCard.appendChild(eventVenueEl);
         eventCard.appendChild(eventURLEl);
