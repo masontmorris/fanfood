@@ -69,6 +69,7 @@ function generatePgBtns(data) {
         prevPgBtn.setAttribute("type", "button");
         prevPgBtn.setAttribute("id", "prev-pg-btn");
         prevPgBtn.textContent = "Previous Page";
+        prevPgBtn.setAttribute("class", "button is-primary");
         container.append(prevPgBtn);
     }
     if (eventPgNum < data.length / 5) {
@@ -76,6 +77,7 @@ function generatePgBtns(data) {
         nextPgBtn.setAttribute("type", "button");
         nextPgBtn.setAttribute("id", "next-pg-btn");
         nextPgBtn.textContent = "Next Page";
+        nextPgBtn.setAttribute("class", "button is-primary");
         container.append(nextPgBtn);
     }
     // page button functionality
