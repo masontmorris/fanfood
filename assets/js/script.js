@@ -53,6 +53,7 @@ function displayEvents(data) {
         let eventDate = eventObj.dates.start.localDate;
         let eventVenue = eventObj._embedded.venues[0];
         let eventURL = eventObj.url;
+
         let venueLat = eventVenue.location.latitude;
         let venueLng = eventVenue.location.longitude;
         console.log(venueLat, venueLng);
@@ -71,7 +72,7 @@ function displayEvents(data) {
         eventVenueEl.textContent = `${eventVenue.city.name}, ${eventVenue.state.stateCode}`;
 
         let eventURLEl = document.createElement("a");
-        eventURLEl.textContent = eventURL;
+        eventURLEl.textContent = "Buy Tickets";
         eventURLEl.href = eventURL;
 
         eventCard.appendChild(eventNameEl);
@@ -114,6 +115,24 @@ function generatePgBtns() {
         sessionStorage.setItem("eventObj", JSON.stringify(eventObj));
         window.location.href = "single-event.html";
     });
+}
+
+function generatePgBtns() {
+    if (eventPgNum > 1) {
+        let prevPgBtn = document.createElement("button");
+        prevPgBtn.setAttribute("type", "button");
+        prevPgBtn.setAttribute("id", "prev-pg-btn");
+        prevPgBtn.textContent = "Previous Page";
+        searchResultsContainer.append(prevPgBtn);
+    }
+
+    if (eventPgNum < querySize / 5) {
+        let nextPgBtn = document.createElement("button");
+        nextPgBtn.setAttribute("type", "button");
+        nextPgBtn.setAttribute("id", "next-pg-btn");
+        nextPgBtn.textContent = "Next Page";
+        searchResultsContainer.append(nextPgBtn);
+    }
 }
 
 eventFormEl.addEventListener("submit", formSubmitHandler);
