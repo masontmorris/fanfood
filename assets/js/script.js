@@ -1,14 +1,16 @@
 var eventKeywordEl = document.querySelector("#event-search");
 var eventFormEl = document.querySelector("#event-form");
 var eventObj = {};
-var eventContainer = $("#event-search-results");
+var searchResultsContainer = $("#event-search-results");
+var eventPgNum = 1;
+var querySize = 30;
 
 function searchEvents(eventKeywordEl) {
     console.log(eventKeywordEl);
 
     var TMAPIKey = "AlQWhpNMj9NUx0BGdXyvOErADkNSGKNs";
 
-    var TMAPIURL = "http://app.ticketmaster.com/discovery/v2/events.json?keyword=" + eventKeywordEl + "&size=5&apikey=" + TMAPIKey;
+    var TMAPIURL = "http://app.ticketmaster.com/discovery/v2/events.json?keyword=" + eventKeywordEl + `&size=${querySize}&apikey=` + TMAPIKey;
 
     fetch(TMAPIURL)
         .then(function (response) {
@@ -28,7 +30,7 @@ function searchEvents(eventKeywordEl) {
 
 function formSubmitHandler(event) {
     event.preventDefault();
-
+    eventPgNum = 1;
     let keyword = eventKeywordEl.value.trim();
 
     if (keyword) {
@@ -42,15 +44,15 @@ function formSubmitHandler(event) {
 
 function displayEvents(data) {
     console.log(data);
-    eventContainer.html("");
-    for (let i = 0; i < data._embedded.events.length; i++) {
-        eventObj = data._embedded.events[i];
-        console.log(eventObj._embedded);
+    searchResultsContainer.html("");
+    for (let i = 0; i < 5; i++) {
+        let eventIndex = i + (eventPgNum - 1) * 5;
+        if (eventIndex == data._embedded.events.length) return generatePgBtns();
+        eventObj = data._embedded.events[eventIndex];
         let eventName = eventObj.name;
         let eventDate = eventObj.dates.start.localDate;
         let eventVenue = eventObj._embedded.venues[0];
         let eventURL = eventObj.url;
-        let eventImage = eventObj.images[0].url;
         let venueLat = eventVenue.location.latitude;
         let venueLng = eventVenue.location.longitude;
         console.log(venueLat, venueLng);
@@ -72,19 +74,42 @@ function displayEvents(data) {
         eventURLEl.textContent = eventURL;
         eventURLEl.href = eventURL;
 
-        let eventImageEl = document.createElement("img");
-        eventImageEl.src = eventImage;
-
         eventCard.appendChild(eventNameEl);
         eventCard.appendChild(eventDateEl);
         eventCard.appendChild(eventVenueEl);
         eventCard.appendChild(eventURLEl);
-        eventCard.appendChild(eventImageEl);
 
-        eventContainer.append(eventCard);
-        testFS(venueLat, venueLng);
+        searchResultsContainer.append(eventCard);
     }
 
+    generatePgBtns();
+    $("#next-pg-btn").click(function () {
+        eventPgNum++;
+        displayEvents(data);
+    });
+
+    $("#prev-pg-btn").click(function () {
+        eventPgNum--;
+        displayEvents(data);
+    });
+}
+
+function generatePgBtns() {
+    if (eventPgNum > 1) {
+        let prevPgBtn = document.createElement("button");
+        prevPgBtn.setAttribute("type", "button");
+        prevPgBtn.setAttribute("id", "prev-pg-btn");
+        prevPgBtn.textContent = "Previous Page";
+        searchResultsContainer.append(prevPgBtn);
+    }
+
+    if (eventPgNum < querySize / 5) {
+        let nextPgBtn = document.createElement("button");
+        nextPgBtn.setAttribute("type", "button");
+        nextPgBtn.setAttribute("id", "next-pg-btn");
+        nextPgBtn.textContent = "Next Page";
+        searchResultsContainer.append(nextPgBtn);
+    }
     $(".event-name").click(function () {
         sessionStorage.setItem("eventObj", JSON.stringify(eventObj));
         window.location.href = "single-event.html";

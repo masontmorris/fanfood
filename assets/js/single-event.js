@@ -34,6 +34,7 @@ function displayResults(data) {
     container.html("");
     for (let i = 0; i < 5; i++) {
         let eventIndex = i + (eventPgNum - 1) * 5;
+        if (eventIndex == data.length) return generatePgBtns(data);
         let venue = data[eventIndex];
         let venueName = venue.name;
         let venueAddress = venue.location.formatted_address;
@@ -59,20 +60,7 @@ function displayResults(data) {
         console.log(venueCategoriesNames);
         container.append(nameEl, addressEl);
     }
-    if (eventPgNum > 1) {
-        let prevPgBtn = document.createElement("button");
-        prevPgBtn.setAttribute("type", "button");
-        prevPgBtn.setAttribute("id", "prev-pg-btn");
-        prevPgBtn.textContent = "Previous Page";
-        container.append(prevPgBtn);
-    }
-
-    let nextPgBtn = document.createElement("button");
-    nextPgBtn.setAttribute("type", "button");
-    nextPgBtn.setAttribute("id", "next-pg-btn");
-    nextPgBtn.textContent = "Next Page";
-    container.append(nextPgBtn);
-
+    generatePgBtns(data);
     $("#next-pg-btn").click(function () {
         eventPgNum++;
         displayResults(data);
@@ -82,4 +70,21 @@ function displayResults(data) {
         eventPgNum--;
         displayResults(data);
     });
+}
+
+function generatePgBtns(data) {
+    if (eventPgNum > 1) {
+        let prevPgBtn = document.createElement("button");
+        prevPgBtn.setAttribute("type", "button");
+        prevPgBtn.setAttribute("id", "prev-pg-btn");
+        prevPgBtn.textContent = "Previous Page";
+        container.append(prevPgBtn);
+    }
+    if (eventPgNum < data.length / 5) {
+        let nextPgBtn = document.createElement("button");
+        nextPgBtn.setAttribute("type", "button");
+        nextPgBtn.setAttribute("id", "next-pg-btn");
+        nextPgBtn.textContent = "Next Page";
+        container.append(nextPgBtn);
+    }
 }
