@@ -1,14 +1,11 @@
 var eventObj = JSON.parse(sessionStorage.getItem("sessionObj"));
-console.log(eventObj);
 var lat = eventObj._embedded.venues[0].location.latitude;
 var lng = eventObj._embedded.venues[0].location.longitude;
 var container = $("#container");
 var eventPgNum = 1;
-console.log(lat, lng);
-
-testFS(lat, lng);
-
-async function testFS(lat, lng) {
+callFS(lat, lng);
+// function fetches data from foursquare API using lat and lng of event venue.
+async function callFS(lat, lng) {
     let fsBaseURL = "https://api.foursquare.com/v3/places/search";
     let fsAPIKey = "fsq33tA/HPjKRDhV2MuuWp+nKpzNssXSc9zq7A7NH+Qrx30=";
     let fsQuery = `?ll=${lat},${lng}&radius=500&categories=13000&limit=50`;
@@ -27,9 +24,8 @@ async function testFS(lat, lng) {
         console.log(err);
     }
 }
-
+// function called after successful API call, takes in data and displays events.
 function displayResults(data) {
-    console.log(data);
     $("#event-name").text(`${eventObj.name} in ${eventObj._embedded.venues[0].city.name}`);
     container.html("");
     for (let i = 0; i < 5; i++) {
@@ -57,12 +53,11 @@ function displayResults(data) {
         addressEl.textContent = venueAddress;
         addressEl.classList.add("venue-address");
 
-        console.log(venueCategoriesNames);
         container.append(nameEl, addressEl);
     }
     generatePgBtns(data);
 }
-
+// function called after displaying events, generates page buttons.
 function generatePgBtns(data) {
     if (eventPgNum > 1) {
         let prevPgBtn = document.createElement("button");
@@ -78,11 +73,11 @@ function generatePgBtns(data) {
         nextPgBtn.textContent = "Next Page";
         container.append(nextPgBtn);
     }
+    // page button functionality
     $("#next-pg-btn").click(function () {
         eventPgNum++;
         displayResults(data);
     });
-
     $("#prev-pg-btn").click(function () {
         eventPgNum--;
         displayResults(data);

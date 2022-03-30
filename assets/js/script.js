@@ -1,14 +1,12 @@
 var eventKeywordEl = document.querySelector("#event-search");
 var eventFormEl = document.querySelector("#event-form");
-var eventObj = {};
 var searchResultsContainer = $("#event-search-results");
 var eventPgNum = 1;
 var querySize = 30;
 var jsonObj = {};
 
+// called by formSubmitHandler, takes in keyword and makes API call to get events.
 function searchEvents(eventKeywordEl) {
-    console.log(eventKeywordEl);
-
     var TMAPIKey = "AlQWhpNMj9NUx0BGdXyvOErADkNSGKNs";
 
     var TMAPIURL = "http://app.ticketmaster.com/discovery/v2/events.json?keyword=" + eventKeywordEl + `&size=${querySize}&apikey=` + TMAPIKey;
@@ -17,7 +15,6 @@ function searchEvents(eventKeywordEl) {
         .then(function (response) {
             if (response.ok) {
                 response.json().then(function (data) {
-                    console.log(data);
                     displayEvents(data);
                 });
             } else {
@@ -29,6 +26,7 @@ function searchEvents(eventKeywordEl) {
         });
 }
 
+// function called on form submit, takes in event keyword and calls searchEvents function. also clears form and resets page number.
 function formSubmitHandler(event) {
     event.preventDefault();
     eventPgNum = 1;
@@ -40,17 +38,16 @@ function formSubmitHandler(event) {
     } else {
         alert("Please enter a search keyword");
     }
-    console.log(event);
 }
 
+// function called after successful API call, takes in data and displays events. also generates page buttons.
 function displayEvents(data) {
-    console.log(data);
     searchResultsContainer.html("");
     for (let i = 0; i < 5; i++) {
         let eventIndex = i + (eventPgNum - 1) * 5;
         if (eventIndex == data._embedded.events.length) return generatePgBtns();
         jsonObj = data._embedded.events;
-        eventObj = jsonObj[eventIndex];
+        let eventObj = jsonObj[eventIndex];
         let eventName = eventObj.name;
         let eventDate = eventObj.dates.start.localDate;
         let eventVenue = eventObj._embedded.venues[0];
@@ -58,7 +55,6 @@ function displayEvents(data) {
 
         let venueLat = eventVenue.location.latitude;
         let venueLng = eventVenue.location.longitude;
-        console.log(venueLat, venueLng);
         let eventCard = document.createElement("div");
         eventCard.classList.add("event-card");
 
@@ -86,6 +82,7 @@ function displayEvents(data) {
     }
 
     generatePgBtns();
+    // page button event listeners
     $("#next-pg-btn").click(function () {
         eventPgNum++;
         displayEvents(data);
@@ -96,7 +93,7 @@ function displayEvents(data) {
         displayEvents(data);
     });
 }
-
+// function that generates page buttons. doesn't generate previous page button if first page and doesn't generate next page button if last page.
 function generatePgBtns() {
     if (eventPgNum > 1) {
         let prevPgBtn = document.createElement("button");
@@ -113,12 +110,12 @@ function generatePgBtns() {
         nextPgBtn.textContent = "Next Page";
         searchResultsContainer.append(nextPgBtn);
     }
+    // event listener for results
     $(".event-name").click(function () {
         let sessionObj = jsonObj[this.id];
-        console.log(this.id);
         sessionStorage.setItem("sessionObj", JSON.stringify(sessionObj));
         window.location.href = "single-event.html";
     });
 }
-
+// event listener for form submit
 eventFormEl.addEventListener("submit", formSubmitHandler);
