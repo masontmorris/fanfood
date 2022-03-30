@@ -61,15 +61,6 @@ function displayResults(data) {
         container.append(nameEl, addressEl);
     }
     generatePgBtns(data);
-    $("#next-pg-btn").click(function () {
-        eventPgNum++;
-        displayResults(data);
-    });
-
-    $("#prev-pg-btn").click(function () {
-        eventPgNum--;
-        displayResults(data);
-    });
 }
 
 function generatePgBtns(data) {
@@ -87,4 +78,13 @@ function generatePgBtns(data) {
         nextPgBtn.textContent = "Next Page";
         container.append(nextPgBtn);
     }
+    $("#next-pg-btn").click(function () {
+        eventPgNum++;
+        displayResults(data);
+    });
+
+    $("#prev-pg-btn").click(function () {
+        eventPgNum--;
+        displayResults(data);
+    });
 }
