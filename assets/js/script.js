@@ -9,7 +9,7 @@ var jsonObj = {};
 function searchEvents(eventKeywordEl) {
     var TMAPIKey = "AlQWhpNMj9NUx0BGdXyvOErADkNSGKNs";
 
-    var TMAPIURL = "http://app.ticketmaster.com/discovery/v2/events.json?keyword=" + eventKeywordEl + `&size=${querySize}&apikey=` + TMAPIKey;
+    var TMAPIURL = "https://app.ticketmaster.com/discovery/v2/events.json?keyword=" + eventKeywordEl + `&size=${querySize}&apikey=` + TMAPIKey;
 
     fetch(TMAPIURL)
         .then(function (response) {
@@ -57,11 +57,14 @@ function displayEvents(data) {
         let venueLng = eventVenue.location.longitude;
         let eventCard = document.createElement("div");
         eventCard.classList.add("event-card");
+        eventCard.setAttribute("id", eventIndex);
 
         let eventNameEl = document.createElement("h2");
         eventNameEl.textContent = eventName;
         eventNameEl.classList.add("event-name");
-        eventNameEl.setAttribute("id", eventIndex);
+
+        let eventVenueName = document.createElement("p");
+        eventVenueName.textContent = eventVenue.name;
 
         let eventDateEl = document.createElement("p");
         eventDateEl.textContent = eventDate;
@@ -76,6 +79,7 @@ function displayEvents(data) {
         eventCard.appendChild(eventNameEl);
         eventCard.appendChild(eventDateEl);
         eventCard.appendChild(eventVenueEl);
+        eventCard.appendChild(eventVenueName);
         eventCard.appendChild(eventURLEl);
 
         searchResultsContainer.append(eventCard);
@@ -110,8 +114,8 @@ function generatePgBtns() {
         nextPgBtn.textContent = "Next Page";
         searchResultsContainer.append(nextPgBtn);
     }
-    // event listener for results
-    $(".event-name").click(function () {
+    // click listener for event cards
+    $(".event-card").click(function () {
         let sessionObj = jsonObj[this.id];
         sessionStorage.setItem("sessionObj", JSON.stringify(sessionObj));
         window.location.href = "single-event.html";

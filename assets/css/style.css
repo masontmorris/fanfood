@@ -10,14 +10,11 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-
 }
-
-
 
 /* Text Positioning */
 
-section  {
+section {
     margin: center;
     text-align: center;
 }
@@ -27,10 +24,10 @@ h3 {
 }
 /* Hero Image */
 
- .hero.has-background {
+.hero.has-background {
     position: relative;
     overflow: hidden;
-} 
+}
 
 .hero-images-style {
     position: relative;
@@ -48,6 +45,7 @@ h3 {
     opacity: 0.3;
 }
 
-event-search-submit, event-search {
+event-search-submit,
+event-search {
     margin: auto;
 }
