@@ -97,7 +97,8 @@ function generatePgBtns(data) {
         prevPgBtn.setAttribute("id", "prev-pg-btn");
         prevPgBtn.textContent = "Previous Page";
         prevPgBtn.classList.add("pg-btn");
-        prevPgBtn.classList.add("pg-button is-primary");
+        prevPgBtn.classList.add("button");
+        prevPgBtn.classList.add("is-primary");
         container.append(prevPgBtn);
     }
     if (eventPgNum < data.length / 5) {
@@ -106,7 +107,8 @@ function generatePgBtns(data) {
         nextPgBtn.setAttribute("id", "next-pg-btn");
         nextPgBtn.textContent = "Next Page";
         nextPgBtn.classList.add("pg-btn");
-        nextPgBtn.classList.add("pg-button is-primary");
+        nextPgBtn.classList.add("button");
+        nextPgBtn.classList.add("is-primary");
         container.append(nextPgBtn);
     }
     goBackContainer.html("");
@@ -114,7 +116,8 @@ function generatePgBtns(data) {
     backBtn.setAttribute("type", "button");
     backBtn.setAttribute("id", "back-button");
     backBtn.textContent = "Back to Event Search Page";
-    backBtn.setAttribute("class", "button is-primary");
+    backBtn.classList.add("button");
+    backBtn.classList.add("is-primary");
     goBackContainer.append(backBtn);
 
     // page button functionality
@@ -129,7 +132,6 @@ function generatePgBtns(data) {
     // click listener for going back to main page
     $("#back-button").click(function () {
         console.log("Going Back");
-        window.location.href = "index.html";    
+        window.location.href = "index.html";
     });
 }
-
