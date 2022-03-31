@@ -57,24 +57,30 @@ function displayEvents(data) {
 
         let eventCard = document.createElement("div");
         eventCard.classList.add("event-card");
+        eventCard.classList.add("card");
         eventCard.setAttribute("id", eventIndex);
 
         let eventNameEl = document.createElement("h2");
         eventNameEl.textContent = eventName;
         eventNameEl.classList.add("event-name");
+        eventNameEl.classList.add("card-header-title");
 
         let eventVenueName = document.createElement("p");
         eventVenueName.textContent = eventVenue.name;
+        eventVenueName.classList.add("content");
 
         let eventDateEl = document.createElement("p");
         eventDateEl.textContent = eventDate;
+        eventDateEl.classList.add("content");
 
         let eventVenueEl = document.createElement("p");
         eventVenueEl.textContent = `${eventVenue.city.name}, ${eventVenue.state.stateCode}`;
+        eventVenueEl.classList.add("content");
 
         let eventURLEl = document.createElement("a");
         eventURLEl.textContent = "Buy Tickets";
         eventURLEl.href = eventURL;
+        eventURLEl.classList.add("content");
 
         eventCard.appendChild(eventNameEl);
         eventCard.appendChild(eventDateEl);
