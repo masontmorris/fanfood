@@ -55,8 +55,6 @@ function displayEvents(data) {
         let eventVenue = eventObj._embedded.venues[0];
         let eventURL = eventObj.url;
 
-        let venueLat = eventVenue.location.latitude;
-        let venueLng = eventVenue.location.longitude;
         let eventCard = document.createElement("div");
         eventCard.classList.add("event-card");
         eventCard.setAttribute("id", eventIndex);
