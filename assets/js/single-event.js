@@ -65,20 +65,24 @@ async function displayResults(data) {
 
         restaurantCard = document.createElement("div");
         restaurantCard.classList.add("restaurant-card");
+        restaurantCard.classList.add("card");
 
         let nameEl = document.createElement("h3");
         nameEl.textContent = venueName;
         nameEl.classList.add("venue-name");
+        nameEl.classList.add("card-header");
 
         let addressEl = document.createElement("p");
         addressEl.textContent = venueAddress;
         addressEl.classList.add("venue-address");
+        addressEl.classList.add("card-content");
 
         let urlEl = document.createElement("a");
         urlEl.setAttribute("href", venueURL);
         urlEl.setAttribute("target", "_blank");
         urlEl.textContent = "Visit Website";
         urlEl.classList.add("venue-url");
+        urlEl.classList.add("card-content");
 
         restaurantCard.append(nameEl, addressEl, urlEl);
         restaurantList.append(restaurantCard);

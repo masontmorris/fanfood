@@ -53,3 +53,14 @@ event-search {
 .pg-btn {
     margin: 0.25em;
 }
+
+
+.event-card, .restaurant-card {
+    margin: 0.5em auto;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 0.25em;
+    background-color: #fff;
+    width: 40%;
+    text-align: left;
+}
