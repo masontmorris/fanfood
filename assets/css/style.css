@@ -50,8 +50,9 @@ event-search {
     margin: auto;
 }
 
-.pg-btn {
+.button.is-primary {
     margin: 0.25em;
+    background-color: #24A19C;
 }
 
 
@@ -60,7 +61,39 @@ event-search {
     padding: 0.5em;
     border: 1px solid #ccc;
     border-radius: 0.25em;
-    background-color: #fff;
+    background-color: #F1F3F4;
     width: 40%;
     text-align: left;
+    min-width: 40%;
+}
+
+@media only screen and (max-width: 600px) {
+    .event-card, .restaurant-card {
+        min-width: 80%;
+    }
+}
+
+.card-header {
+    border-radius: 0.25em;
+    padding: 0.5em;
+    margin: 0.5em;
+    display: flex;
+    align-items: center;
+    background-color: #24A19C;
+    justify-content: space-between;
+}
+
+.card-header-title {
+    color: white;
+    flex: 0 1 auto;
+}
+
+.cat-icon {
+    flex: 0 3 4em;
+    min-width: 2em;
+    align-self: center;
+}
+
+.content {
+    padding-left: 1%;
 }

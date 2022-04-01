@@ -58,19 +58,26 @@ async function displayResults(data) {
             venueCategoriesNames.push(venueCategories[j].name);
         }
 
-        let venueCategoriesIcon = [];
-        for (let j = 0; j < venueCategories.length; j++) {
-            venueCategoriesIcon.push(venueCategories[j].icon.prefix + "bg_32" + venueCategories[j].icon.suffix);
-        }
-
         restaurantCard = document.createElement("div");
         restaurantCard.classList.add("restaurant-card");
         restaurantCard.classList.add("card");
 
+        let cardHeader = document.createElement("header");
+        cardHeader.classList.add("card-header");
+
         let nameEl = document.createElement("h3");
         nameEl.textContent = venueName;
         nameEl.classList.add("venue-name");
-        nameEl.classList.add("card-header");
+        nameEl.classList.add("card-header-title");
+        cardHeader.append(nameEl);
+
+        for (let i = 0; i < venueCategories.length; i++) {
+            let icon = document.createElement("img");
+            icon.setAttribute("src", venueCategories[i].icon.prefix + "120" + venueCategories[i].icon.suffix);
+            icon.setAttribute("alt", venueCategories[i].name);
+            icon.classList.add("cat-icon");
+            cardHeader.append(icon);
+        }
 
         let addressEl = document.createElement("p");
         addressEl.textContent = venueAddress;
@@ -84,7 +91,7 @@ async function displayResults(data) {
         urlEl.classList.add("venue-url");
         urlEl.classList.add("card-content");
 
-        restaurantCard.append(nameEl, addressEl, urlEl);
+        restaurantCard.append(cardHeader, addressEl, urlEl);
         restaurantList.append(restaurantCard);
     }
     $(`#restaurant-list-${eventPgNum - 1}`).remove();
