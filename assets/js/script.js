@@ -140,43 +140,24 @@ function generatePgBtns() {
     }
 
     $(".pin-btn").click(function () {
-        let eventObj = jsonObj[this.parentElement.id];
-        let eventName = eventObj.name;
-        let eventDate = eventObj.dates.start.localDate;
-        let eventVenue = eventObj._embedded.venues[0];
-        let eventURL = eventObj.url;
-        let eventImage = eventObj.images[0].url;
-        let eventDesc = eventObj.info;
-        let eventId = eventObj.id;
-
-        let event = {
-            name: eventName,
-            date: eventDate,
-            venue: eventVenue.name,
-            city: eventVenue.city.name,
-            state: eventVenue.state.stateCode,
-            url: eventURL,
-            image: eventImage,
-            desc: eventDesc,
-            id: eventId,
-        };
+        let storedIndex = this.parentElement.id;
 
         if (storedEvents) {
             matchingIds = storedEvents.filter((obj) => {
-                return obj.id == eventId;
+                return obj.id == jsonObj[storedIndex].id;
             });
             console.log(matchingIds);
             if (matchingIds.length > 0) alert("Event is already pinned!");
             else {
-                storedEvents.push(event);
+                storedEvents.push(jsonObj[storedIndex]);
                 localStorage.setItem("events", JSON.stringify(storedEvents));
                 alert("Event added to your favorites!");
             }
         } else {
+            console.log(jsonObj[storedIndex]);
             let newEvent = [];
-            newEvent.push(event);
+            newEvent.push(jsonObj[storedIndex]);
             localStorage.setItem("events", JSON.stringify(newEvent));
-            storedEvents = newEvent;
             alert("Event added to your favorites!");
         }
     });
@@ -208,13 +189,13 @@ function onLoad() {
                 eventNameEl.classList.add("event-name");
 
                 let eventVenueName = document.createElement("p");
-                eventVenueName.textContent = storedEvents[i].venue;
+                eventVenueName.textContent = storedEvents[i]._embedded.venues[0].name;
 
                 let eventDateEl = document.createElement("p");
-                eventDateEl.textContent = storedEvents[i].date;
+                eventDateEl.textContent = storedEvents[i].dates.start.localDate;
 
                 let eventVenueEl = document.createElement("p");
-                eventVenueEl.textContent = `${storedEvents[i].city}, ${storedEvents[i].state}`;
+                eventVenueEl.textContent = `${storedEvents[i]._embedded.venues[0].city.name}, ${storedEvents[i]._embedded.venues[0].state.stateCode}`;
 
                 let eventURLEl = document.createElement("a");
                 eventURLEl.textContent = "Buy Tickets";
@@ -231,7 +212,7 @@ function onLoad() {
                 selectBtn.setAttribute("type", "button");
                 selectBtn.classList.add("button");
                 selectBtn.classList.add("is-primary");
-                selectBtn.classList.add("select-btn");
+                selectBtn.classList.add("pin-select-btn");
                 selectBtn.textContent = "View nearby bars and restaurants";
 
                 eventCard.appendChild(eventNameEl);
@@ -248,6 +229,13 @@ function onLoad() {
                     storedEvents.splice(eventId, 1);
                     localStorage.setItem("events", JSON.stringify(storedEvents));
                     this.parentElement.remove();
+                });
+
+                $(".pin-select-btn").click(function () {
+                    let sessionObj = storedEvents[this.parentElement.id];
+                    sessionStorage.setItem("sessionObj", JSON.stringify(sessionObj));
+                    window.location.href = "single-event.html";
+                    console.log(sessionObj);
                 });
             }
         }
