@@ -4,6 +4,7 @@ var searchResultsContainer = $("#event-search-results");
 var eventPgNum = 1;
 var querySize = 30;
 var jsonObj = {};
+var storedEvents = [];
 
 // called by formSubmitHandler, takes in keyword and makes API call to get events.
 function searchEvents(eventKeywordEl) {
@@ -160,16 +161,24 @@ function generatePgBtns() {
             id: eventId,
         };
 
-        let storedEvents = JSON.parse(localStorage.getItem("events"));
         if (storedEvents) {
-            storedEvents.push(event);
-            localStorage.setItem("events", JSON.stringify(storedEvents));
+            matchingIds = storedEvents.filter((obj) => {
+                return obj.id == eventId;
+            });
+            console.log(matchingIds);
+            if (matchingIds.length > 0) alert("Event is already pinned!");
+            else {
+                storedEvents.push(event);
+                localStorage.setItem("events", JSON.stringify(storedEvents));
+                alert("Event added to your favorites!");
+            }
         } else {
-            let newEvents = [];
-            newEvents.push(event);
-            localStorage.setItem("events", JSON.stringify(newEvents));
+            let newEvent = [];
+            newEvent.push(event);
+            localStorage.setItem("events", JSON.stringify(newEvent));
+            storedEvents = newEvent;
+            alert("Event added to your favorites!");
         }
-        alert("Event added to your favorites!");
     });
 
     // click listener for event cards
@@ -179,5 +188,56 @@ function generatePgBtns() {
         window.location.href = "single-event.html";
     });
 }
+
+function onLoad() {
+    storedEvents = JSON.parse(localStorage.getItem("events"));
+    if (storedEvents) {
+        for (let i = 0; i < storedEvents.length; i++) {
+            let eventCard = document.createElement("div");
+            eventCard.classList.add("event-card");
+            eventCard.setAttribute("id", i);
+
+            let eventNameEl = document.createElement("h2");
+            eventNameEl.textContent = storedEvents[i].name;
+            eventNameEl.classList.add("event-name");
+
+            let eventVenueName = document.createElement("p");
+            eventVenueName.textContent = storedEvents[i].venue;
+
+            let eventDateEl = document.createElement("p");
+            eventDateEl.textContent = storedEvents[i].date;
+
+            let eventVenueEl = document.createElement("p");
+            eventVenueEl.textContent = `${storedEvents[i].city}, ${storedEvents[i].state}`;
+
+            let eventURLEl = document.createElement("a");
+            eventURLEl.textContent = "Buy Tickets";
+            eventURLEl.href = storedEvents[i].url;
+
+            let pinBtn = document.createElement("button");
+            pinBtn.setAttribute("type", "button");
+            pinBtn.classList.add("button");
+            pinBtn.classList.add("is-primary");
+            pinBtn.classList.add("pin-btn");
+            pinBtn.textContent = "Pin to favorites";
+
+            let selectBtn = document.createElement("button");
+            selectBtn.setAttribute("type", "button");
+            selectBtn.classList.add("button");
+            selectBtn.classList.add("is-primary");
+            selectBtn.classList.add("select-btn");
+            selectBtn.textContent = "View nearby bars and restaurants";
+
+            eventCard.appendChild(eventNameEl);
+            eventCard.appendChild(eventDateEl);
+            eventCard.appendChild(eventVenueEl);
+            eventCard.appendChild(eventVenueName);
+            searchResultsContainer.append(eventCard);
+        }
+    }
+}
+
 // event listener for form submit
 eventFormEl.addEventListener("submit", formSubmitHandler);
+
+onLoad();
