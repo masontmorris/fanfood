@@ -194,7 +194,7 @@ function onLoad() {
     storedEvents = JSON.parse(localStorage.getItem("events"));
     if (storedEvents) {
         for (let i = 0; i < storedEvents.length; i++) {
-            if (dayjs().isBefore(dayjs(storedEvents[i].date))) {
+            if (dayjs().isAfter(dayjs(storedEvents[i].date))) {
                 storedEvents.splice(i, 1);
                 localStorage.setItem("events", JSON.stringify(storedEvents));
                 i--;
