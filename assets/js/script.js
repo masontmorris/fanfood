@@ -190,49 +190,56 @@ function generatePgBtns() {
 }
 
 function onLoad() {
+    console.log(dayjs());
     storedEvents = JSON.parse(localStorage.getItem("events"));
     if (storedEvents) {
         for (let i = 0; i < storedEvents.length; i++) {
-            let eventCard = document.createElement("div");
-            eventCard.classList.add("event-card");
-            eventCard.setAttribute("id", i);
+            if (dayjs().isBefore(dayjs(storedEvents[i].date))) {
+                storedEvents.splice(i, 1);
+                localStorage.setItem("events", JSON.stringify(storedEvents));
+                i--;
+            } else {
+                let eventCard = document.createElement("div");
+                eventCard.classList.add("event-card");
+                eventCard.setAttribute("id", i);
 
-            let eventNameEl = document.createElement("h2");
-            eventNameEl.textContent = storedEvents[i].name;
-            eventNameEl.classList.add("event-name");
+                let eventNameEl = document.createElement("h2");
+                eventNameEl.textContent = storedEvents[i].name;
+                eventNameEl.classList.add("event-name");
 
-            let eventVenueName = document.createElement("p");
-            eventVenueName.textContent = storedEvents[i].venue;
+                let eventVenueName = document.createElement("p");
+                eventVenueName.textContent = storedEvents[i].venue;
 
-            let eventDateEl = document.createElement("p");
-            eventDateEl.textContent = storedEvents[i].date;
+                let eventDateEl = document.createElement("p");
+                eventDateEl.textContent = storedEvents[i].date;
 
-            let eventVenueEl = document.createElement("p");
-            eventVenueEl.textContent = `${storedEvents[i].city}, ${storedEvents[i].state}`;
+                let eventVenueEl = document.createElement("p");
+                eventVenueEl.textContent = `${storedEvents[i].city}, ${storedEvents[i].state}`;
 
-            let eventURLEl = document.createElement("a");
-            eventURLEl.textContent = "Buy Tickets";
-            eventURLEl.href = storedEvents[i].url;
+                let eventURLEl = document.createElement("a");
+                eventURLEl.textContent = "Buy Tickets";
+                eventURLEl.href = storedEvents[i].url;
 
-            let pinBtn = document.createElement("button");
-            pinBtn.setAttribute("type", "button");
-            pinBtn.classList.add("button");
-            pinBtn.classList.add("is-primary");
-            pinBtn.classList.add("pin-btn");
-            pinBtn.textContent = "Pin to favorites";
+                let pinBtn = document.createElement("button");
+                pinBtn.setAttribute("type", "button");
+                pinBtn.classList.add("button");
+                pinBtn.classList.add("is-primary");
+                pinBtn.classList.add("pin-btn");
+                pinBtn.textContent = "Pin to favorites";
 
-            let selectBtn = document.createElement("button");
-            selectBtn.setAttribute("type", "button");
-            selectBtn.classList.add("button");
-            selectBtn.classList.add("is-primary");
-            selectBtn.classList.add("select-btn");
-            selectBtn.textContent = "View nearby bars and restaurants";
+                let selectBtn = document.createElement("button");
+                selectBtn.setAttribute("type", "button");
+                selectBtn.classList.add("button");
+                selectBtn.classList.add("is-primary");
+                selectBtn.classList.add("select-btn");
+                selectBtn.textContent = "View nearby bars and restaurants";
 
-            eventCard.appendChild(eventNameEl);
-            eventCard.appendChild(eventDateEl);
-            eventCard.appendChild(eventVenueEl);
-            eventCard.appendChild(eventVenueName);
-            searchResultsContainer.append(eventCard);
+                eventCard.appendChild(eventNameEl);
+                eventCard.appendChild(eventDateEl);
+                eventCard.appendChild(eventVenueEl);
+                eventCard.appendChild(eventVenueName);
+                searchResultsContainer.append(eventCard);
+            }
         }
     }
 }
