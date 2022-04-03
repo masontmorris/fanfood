@@ -55,8 +55,6 @@ function displayEvents(data) {
         let eventVenue = eventObj._embedded.venues[0];
         let eventURL = eventObj.url;
 
-        let venueLat = eventVenue.location.latitude;
-        let venueLng = eventVenue.location.longitude;
         let eventCard = document.createElement("div");
         eventCard.classList.add("event-card");
         eventCard.setAttribute("id", eventIndex);
@@ -78,11 +76,27 @@ function displayEvents(data) {
         eventURLEl.textContent = "Buy Tickets";
         eventURLEl.href = eventURL;
 
+        let pinBtn = document.createElement("button");
+        pinBtn.setAttribute("type", "button");
+        pinBtn.classList.add("button");
+        pinBtn.classList.add("is-primary");
+        pinBtn.classList.add("pin-btn");
+        pinBtn.textContent = "Pin to favorites";
+
+        let selectBtn = document.createElement("button");
+        selectBtn.setAttribute("type", "button");
+        selectBtn.classList.add("button");
+        selectBtn.classList.add("is-primary");
+        selectBtn.classList.add("select-btn");
+        selectBtn.textContent = "View nearby bars and restaurants";
+
         eventCard.appendChild(eventNameEl);
         eventCard.appendChild(eventDateEl);
         eventCard.appendChild(eventVenueEl);
         eventCard.appendChild(eventVenueName);
         eventCard.appendChild(eventURLEl);
+        eventCard.appendChild(pinBtn);
+        eventCard.appendChild(selectBtn);
 
         searchResultsContainer.append(eventCard);
     }
@@ -123,9 +137,44 @@ function generatePgBtns() {
         nextPgBtn.textContent = "Next Page";
         searchResultsContainer.append(nextPgBtn);
     }
+
+    $(".pin-btn").click(function () {
+        let eventObj = jsonObj[this.parentElement.id];
+        let eventName = eventObj.name;
+        let eventDate = eventObj.dates.start.localDate;
+        let eventVenue = eventObj._embedded.venues[0];
+        let eventURL = eventObj.url;
+        let eventImage = eventObj.images[0].url;
+        let eventDesc = eventObj.info;
+        let eventId = eventObj.id;
+
+        let event = {
+            name: eventName,
+            date: eventDate,
+            venue: eventVenue.name,
+            city: eventVenue.city.name,
+            state: eventVenue.state.stateCode,
+            url: eventURL,
+            image: eventImage,
+            desc: eventDesc,
+            id: eventId,
+        };
+
+        let storedEvents = JSON.parse(localStorage.getItem("events"));
+        if (storedEvents) {
+            storedEvents.push(event);
+            localStorage.setItem("events", JSON.stringify(storedEvents));
+        } else {
+            let newEvents = [];
+            newEvents.push(event);
+            localStorage.setItem("events", JSON.stringify(newEvents));
+        }
+        alert("Event added to your favorites!");
+    });
+
     // click listener for event cards
-    $(".event-card").click(function () {
-        let sessionObj = jsonObj[this.id];
+    $(".select-btn").click(function () {
+        let sessionObj = jsonObj[this.parentElement.id];
         sessionStorage.setItem("sessionObj", JSON.stringify(sessionObj));
         window.location.href = "single-event.html";
     });
