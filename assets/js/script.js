@@ -220,12 +220,12 @@ function onLoad() {
                 eventURLEl.textContent = "Buy Tickets";
                 eventURLEl.href = storedEvents[i].url;
 
-                let pinBtn = document.createElement("button");
-                pinBtn.setAttribute("type", "button");
-                pinBtn.classList.add("button");
-                pinBtn.classList.add("is-primary");
-                pinBtn.classList.add("pin-btn");
-                pinBtn.textContent = "Pin to favorites";
+                let unpinBtn = document.createElement("button");
+                unpinBtn.setAttribute("type", "button");
+                unpinBtn.classList.add("button");
+                unpinBtn.classList.add("is-primary");
+                unpinBtn.classList.add("unpin-btn");
+                unpinBtn.textContent = "Remove from favorites";
 
                 let selectBtn = document.createElement("button");
                 selectBtn.setAttribute("type", "button");
@@ -238,7 +238,17 @@ function onLoad() {
                 eventCard.appendChild(eventDateEl);
                 eventCard.appendChild(eventVenueEl);
                 eventCard.appendChild(eventVenueName);
+                eventCard.appendChild(eventURLEl);
+                eventCard.appendChild(unpinBtn);
+                eventCard.appendChild(selectBtn);
                 searchResultsContainer.append(eventCard);
+
+                $(".unpin-btn").click(function () {
+                    let eventId = this.parentElement.id;
+                    storedEvents.splice(eventId, 1);
+                    localStorage.setItem("events", JSON.stringify(storedEvents));
+                    this.parentElement.remove();
+                });
             }
         }
     }
