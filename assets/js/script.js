@@ -4,6 +4,7 @@ var searchResultsContainer = $("#event-search-results");
 var eventPgNum = 1;
 var querySize = 30;
 var jsonObj = {};
+var storedEvents = [];
 
 // called by formSubmitHandler, takes in keyword and makes API call to get events.
 function searchEvents(eventKeywordEl) {
@@ -55,8 +56,6 @@ function displayEvents(data) {
         let eventVenue = eventObj._embedded.venues[0];
         let eventURL = eventObj.url;
 
-        let venueLat = eventVenue.location.latitude;
-        let venueLng = eventVenue.location.longitude;
         let eventCard = document.createElement("div");
         eventCard.classList.add("event-card");
         eventCard.setAttribute("id", eventIndex);
@@ -78,11 +77,27 @@ function displayEvents(data) {
         eventURLEl.textContent = "Buy Tickets";
         eventURLEl.href = eventURL;
 
+        let pinBtn = document.createElement("button");
+        pinBtn.setAttribute("type", "button");
+        pinBtn.classList.add("button");
+        pinBtn.classList.add("is-primary");
+        pinBtn.classList.add("pin-btn");
+        pinBtn.textContent = "Pin to favorites";
+
+        let selectBtn = document.createElement("button");
+        selectBtn.setAttribute("type", "button");
+        selectBtn.classList.add("button");
+        selectBtn.classList.add("is-primary");
+        selectBtn.classList.add("select-btn");
+        selectBtn.textContent = "View nearby bars and restaurants";
+
         eventCard.appendChild(eventNameEl);
         eventCard.appendChild(eventDateEl);
         eventCard.appendChild(eventVenueEl);
         eventCard.appendChild(eventVenueName);
         eventCard.appendChild(eventURLEl);
+        eventCard.appendChild(pinBtn);
+        eventCard.appendChild(selectBtn);
 
         searchResultsContainer.append(eventCard);
     }
@@ -123,12 +138,111 @@ function generatePgBtns() {
         nextPgBtn.textContent = "Next Page";
         searchResultsContainer.append(nextPgBtn);
     }
+
+    $(".pin-btn").click(function () {
+        let storedIndex = this.parentElement.id;
+
+        if (storedEvents) {
+            matchingIds = storedEvents.filter((obj) => {
+                return obj.id == jsonObj[storedIndex].id;
+            });
+            console.log(matchingIds);
+            if (matchingIds.length > 0) alert("Event is already pinned!");
+            else {
+                storedEvents.push(jsonObj[storedIndex]);
+                localStorage.setItem("events", JSON.stringify(storedEvents));
+                alert("Event added to your favorites!");
+            }
+        } else {
+            console.log(jsonObj[storedIndex]);
+            let newEvent = [];
+            newEvent.push(jsonObj[storedIndex]);
+            localStorage.setItem("events", JSON.stringify(newEvent));
+            alert("Event added to your favorites!");
+        }
+    });
+
     // click listener for event cards
-    $(".event-card").click(function () {
-        let sessionObj = jsonObj[this.id];
+    $(".select-btn").click(function () {
+        let sessionObj = jsonObj[this.parentElement.id];
         sessionStorage.setItem("sessionObj", JSON.stringify(sessionObj));
         window.location.href = "single-event.html";
     });
 }
+
+function onLoad() {
+    console.log(dayjs());
+    storedEvents = JSON.parse(localStorage.getItem("events"));
+    if (storedEvents) {
+        for (let i = 0; i < storedEvents.length; i++) {
+            if (dayjs().isAfter(dayjs(storedEvents[i].date))) {
+                storedEvents.splice(i, 1);
+                localStorage.setItem("events", JSON.stringify(storedEvents));
+                i--;
+            } else {
+                let eventCard = document.createElement("div");
+                eventCard.classList.add("event-card");
+                eventCard.setAttribute("id", i);
+
+                let eventNameEl = document.createElement("h2");
+                eventNameEl.textContent = storedEvents[i].name;
+                eventNameEl.classList.add("event-name");
+
+                let eventVenueName = document.createElement("p");
+                eventVenueName.textContent = storedEvents[i]._embedded.venues[0].name;
+
+                let eventDateEl = document.createElement("p");
+                eventDateEl.textContent = storedEvents[i].dates.start.localDate;
+
+                let eventVenueEl = document.createElement("p");
+                eventVenueEl.textContent = `${storedEvents[i]._embedded.venues[0].city.name}, ${storedEvents[i]._embedded.venues[0].state.stateCode}`;
+
+                let eventURLEl = document.createElement("a");
+                eventURLEl.textContent = "Buy Tickets";
+                eventURLEl.href = storedEvents[i].url;
+
+                let unpinBtn = document.createElement("button");
+                unpinBtn.setAttribute("type", "button");
+                unpinBtn.classList.add("button");
+                unpinBtn.classList.add("is-primary");
+                unpinBtn.classList.add("unpin-btn");
+                unpinBtn.textContent = "Remove from favorites";
+
+                let selectBtn = document.createElement("button");
+                selectBtn.setAttribute("type", "button");
+                selectBtn.classList.add("button");
+                selectBtn.classList.add("is-primary");
+                selectBtn.classList.add("pin-select-btn");
+                selectBtn.textContent = "View nearby bars and restaurants";
+
+                eventCard.appendChild(eventNameEl);
+                eventCard.appendChild(eventDateEl);
+                eventCard.appendChild(eventVenueEl);
+                eventCard.appendChild(eventVenueName);
+                eventCard.appendChild(eventURLEl);
+                eventCard.appendChild(unpinBtn);
+                eventCard.appendChild(selectBtn);
+                searchResultsContainer.append(eventCard);
+
+                $(".unpin-btn").click(function () {
+                    let eventId = this.parentElement.id;
+                    storedEvents.splice(eventId, 1);
+                    localStorage.setItem("events", JSON.stringify(storedEvents));
+                    this.parentElement.remove();
+                });
+
+                $(".pin-select-btn").click(function () {
+                    let sessionObj = storedEvents[this.parentElement.id];
+                    sessionStorage.setItem("sessionObj", JSON.stringify(sessionObj));
+                    window.location.href = "single-event.html";
+                    console.log(sessionObj);
+                });
+            }
+        }
+    }
+}
+
 // event listener for form submit
 eventFormEl.addEventListener("submit", formSubmitHandler);
+
+onLoad();
