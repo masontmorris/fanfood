@@ -86,6 +86,8 @@ function displayEvents(data) {
         eventURLEl.href = eventURL;
         eventURLEl.classList.add("content");
 
+        let lineBreak = document.createElement("br");
+
         cardHeader.appendChild(eventNameEl);
         eventCard.appendChild(cardHeader);
         let pinBtn = document.createElement("button");
@@ -106,6 +108,7 @@ function displayEvents(data) {
         eventCard.appendChild(eventVenueEl);
         eventCard.appendChild(eventVenueName);
         eventCard.appendChild(eventURLEl);
+        eventCard.appendChild(lineBreak);
         eventCard.appendChild(pinBtn);
         eventCard.appendChild(selectBtn);
 
@@ -225,11 +228,14 @@ function onLoad() {
                 selectBtn.classList.add("pin-select-btn");
                 selectBtn.textContent = "View nearby bars and restaurants";
 
+                let lineBreak = document.createElement("br");
+
                 eventCard.appendChild(eventNameEl);
                 eventCard.appendChild(eventDateEl);
                 eventCard.appendChild(eventVenueEl);
                 eventCard.appendChild(eventVenueName);
                 eventCard.appendChild(eventURLEl);
+                eventCard.appendChild(lineBreak);
                 eventCard.appendChild(unpinBtn);
                 eventCard.appendChild(selectBtn);
                 searchResultsContainer.append(eventCard);

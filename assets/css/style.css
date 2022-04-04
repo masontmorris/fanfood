@@ -106,7 +106,25 @@ h3 {
 }
 
 .content {
-    padding-left: 1%;
+    margin-left: 1%;
+}
+
+.button.is-primary.pin-btn {
+    margin-left: 1%;
+    margin-top: 2%;
+}
+
+.button.is-primary.select-btn {
+    margin-left: 1%;
+    margin-top: 2%;
+}
+
+.button.is-primary.unpin-btn {
+    margin: 0 .25em 0 0
+}
+
+.button.is-primary.pin-select-btn {
+    margin: 0 .25em 0 0
 }
 
 .card-content {
