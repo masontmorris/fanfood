@@ -2,6 +2,7 @@
 ## FanFood by Mason Morris, Jason Arritt, and Allen Bey
 
 User story:
+
 AS A sports fan planning on attending an upcoming event
 
 I WANT an app that matches me with restaurants or bars close to the venue
