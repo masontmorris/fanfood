@@ -60,6 +60,9 @@ function displayEvents(data) {
         eventCard.classList.add("card");
         eventCard.setAttribute("id", eventIndex);
 
+        let cardHeader = document.createElement("header");
+        cardHeader.classList.add("card-header");
+
         let eventNameEl = document.createElement("h2");
         eventNameEl.textContent = eventName;
         eventNameEl.classList.add("event-name");
@@ -82,7 +85,8 @@ function displayEvents(data) {
         eventURLEl.href = eventURL;
         eventURLEl.classList.add("content");
 
-        eventCard.appendChild(eventNameEl);
+        cardHeader.appendChild(eventNameEl);
+        eventCard.appendChild(cardHeader);
         eventCard.appendChild(eventDateEl);
         eventCard.appendChild(eventVenueEl);
         eventCard.appendChild(eventVenueName);
