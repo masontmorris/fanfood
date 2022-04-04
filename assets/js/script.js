@@ -58,25 +58,38 @@ function displayEvents(data) {
 
         let eventCard = document.createElement("div");
         eventCard.classList.add("event-card");
+        eventCard.classList.add("card");
         eventCard.setAttribute("id", eventIndex);
+
+        let cardHeader = document.createElement("header");
+        cardHeader.classList.add("card-header");
 
         let eventNameEl = document.createElement("h2");
         eventNameEl.textContent = eventName;
         eventNameEl.classList.add("event-name");
+        eventNameEl.classList.add("card-header-title");
 
         let eventVenueName = document.createElement("p");
         eventVenueName.textContent = eventVenue.name;
+        eventVenueName.classList.add("content");
 
         let eventDateEl = document.createElement("p");
-        eventDateEl.textContent = eventDate;
+        eventDateEl.textContent = dayjs(eventDate).format("dddd, MMMM D YYYY");
+        eventDateEl.classList.add("content");
 
         let eventVenueEl = document.createElement("p");
         eventVenueEl.textContent = `${eventVenue.city.name}, ${eventVenue.state.stateCode}`;
+        eventVenueEl.classList.add("content");
 
         let eventURLEl = document.createElement("a");
         eventURLEl.textContent = "Buy Tickets";
         eventURLEl.href = eventURL;
+        eventURLEl.classList.add("content");
 
+        let lineBreak = document.createElement("br");
+
+        cardHeader.appendChild(eventNameEl);
+        eventCard.appendChild(cardHeader);
         let pinBtn = document.createElement("button");
         pinBtn.setAttribute("type", "button");
         pinBtn.classList.add("button");
@@ -91,11 +104,11 @@ function displayEvents(data) {
         selectBtn.classList.add("select-btn");
         selectBtn.textContent = "View nearby bars and restaurants";
 
-        eventCard.appendChild(eventNameEl);
         eventCard.appendChild(eventDateEl);
         eventCard.appendChild(eventVenueEl);
         eventCard.appendChild(eventVenueName);
         eventCard.appendChild(eventURLEl);
+        eventCard.appendChild(lineBreak);
         eventCard.appendChild(pinBtn);
         eventCard.appendChild(selectBtn);
 
@@ -184,22 +197,30 @@ function onLoad() {
                 eventCard.classList.add("event-card");
                 eventCard.setAttribute("id", i);
 
+                let cardHeader = document.createElement("header");
+                cardHeader.classList.add("card-header");
+
                 let eventNameEl = document.createElement("h2");
                 eventNameEl.textContent = storedEvents[i].name;
                 eventNameEl.classList.add("event-name");
+                eventNameEl.classList.add("card-header-title");
 
                 let eventVenueName = document.createElement("p");
                 eventVenueName.textContent = storedEvents[i]._embedded.venues[0].name;
+                eventVenueName.classList.add("content");
 
                 let eventDateEl = document.createElement("p");
-                eventDateEl.textContent = storedEvents[i].dates.start.localDate;
+                eventDateEl.textContent = dayjs(storedEvents[i].dates.start.localDate).format("dddd, MMMM D YYYY");
+                eventDateEl.classList.add("content");
 
                 let eventVenueEl = document.createElement("p");
                 eventVenueEl.textContent = `${storedEvents[i]._embedded.venues[0].city.name}, ${storedEvents[i]._embedded.venues[0].state.stateCode}`;
+                eventVenueEl.classList.add("content");
 
                 let eventURLEl = document.createElement("a");
                 eventURLEl.textContent = "Buy Tickets";
                 eventURLEl.href = storedEvents[i].url;
+                eventURLEl.classList.add("content");
 
                 let unpinBtn = document.createElement("button");
                 unpinBtn.setAttribute("type", "button");
@@ -215,11 +236,15 @@ function onLoad() {
                 selectBtn.classList.add("pin-select-btn");
                 selectBtn.textContent = "View nearby bars and restaurants";
 
-                eventCard.appendChild(eventNameEl);
+                let lineBreak = document.createElement("br");
+
+                cardHeader.appendChild(eventNameEl);
+                eventCard.appendChild(cardHeader);
                 eventCard.appendChild(eventDateEl);
                 eventCard.appendChild(eventVenueEl);
                 eventCard.appendChild(eventVenueName);
                 eventCard.appendChild(eventURLEl);
+                eventCard.appendChild(lineBreak);
                 eventCard.appendChild(unpinBtn);
                 eventCard.appendChild(selectBtn);
                 searchResultsContainer.append(eventCard);
