@@ -52,6 +52,14 @@ h3 {
     opacity: 0.3;
 }
 
+p.title.is-4 {
+    margin-bottom: 0;
+}
+
+.input {
+    width: 200px;
+}
+
 .event-search-submit,
 .event-search {
     margin: auto;
@@ -78,7 +86,7 @@ h3 {
     min-width: 40%;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 720px) {
     .event-card, .restaurant-card {
         min-width: 80%;
     }
@@ -120,11 +128,13 @@ h3 {
 }
 
 .button.is-primary.unpin-btn {
-    margin: 0 .25em 0 0
+    margin-left: 1%;
+    margin-top: 2%;
 }
 
 .button.is-primary.pin-select-btn {
-    margin: 0 .25em 0 0
+    margin-left: 1%;
+    margin-top: 2%;
 }
 
 .card-content {

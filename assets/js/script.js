@@ -74,7 +74,7 @@ function displayEvents(data) {
         eventVenueName.classList.add("content");
 
         let eventDateEl = document.createElement("p");
-        eventDateEl.textContent = eventDate;
+        eventDateEl.textContent = dayjs(eventDate).format("dddd, MMMM D YYYY");
         eventDateEl.classList.add("content");
 
         let eventVenueEl = document.createElement("p");
@@ -197,22 +197,30 @@ function onLoad() {
                 eventCard.classList.add("event-card");
                 eventCard.setAttribute("id", i);
 
+                let cardHeader = document.createElement("header");
+                cardHeader.classList.add("card-header");
+
                 let eventNameEl = document.createElement("h2");
                 eventNameEl.textContent = storedEvents[i].name;
                 eventNameEl.classList.add("event-name");
+                eventNameEl.classList.add("card-header-title");
 
                 let eventVenueName = document.createElement("p");
                 eventVenueName.textContent = storedEvents[i]._embedded.venues[0].name;
+                eventVenueName.classList.add("content");
 
                 let eventDateEl = document.createElement("p");
-                eventDateEl.textContent = storedEvents[i].dates.start.localDate;
+                eventDateEl.textContent = dayjs(storedEvents[i].dates.start.localDate).format("dddd, MMMM D YYYY");
+                eventDateEl.classList.add("content");
 
                 let eventVenueEl = document.createElement("p");
                 eventVenueEl.textContent = `${storedEvents[i]._embedded.venues[0].city.name}, ${storedEvents[i]._embedded.venues[0].state.stateCode}`;
+                eventVenueEl.classList.add("content");
 
                 let eventURLEl = document.createElement("a");
                 eventURLEl.textContent = "Buy Tickets";
                 eventURLEl.href = storedEvents[i].url;
+                eventURLEl.classList.add("content");
 
                 let unpinBtn = document.createElement("button");
                 unpinBtn.setAttribute("type", "button");
@@ -230,7 +238,8 @@ function onLoad() {
 
                 let lineBreak = document.createElement("br");
 
-                eventCard.appendChild(eventNameEl);
+                cardHeader.appendChild(eventNameEl);
+                eventCard.appendChild(cardHeader);
                 eventCard.appendChild(eventDateEl);
                 eventCard.appendChild(eventVenueEl);
                 eventCard.appendChild(eventVenueName);
