@@ -21,3 +21,5 @@ SO THAT I can have a better gameday experience
 - Bulma CSS
 - TicketMaster Discover API
 - Foursquare Places API
+
+[Click here to view the deployed project!](https://masontmorris.github.io/fanfood/)
